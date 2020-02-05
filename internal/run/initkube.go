@@ -67,7 +67,7 @@ func (i *InitKube) Prepare() error {
 	}
 	if i.values.Token == "" && (i.values.ClientCertificate == "" && i.values.ClientKey == "") {
 		return errors.New("token or client certs are needed to deploy")
-	} else if i.values.ClientCertificate == "" || i.values.ClientKey == "" {
+	} else if i.values.Token == "" && (i.values.ClientCertificate == "" || i.values.ClientKey == "") {
 		return errors.New("both client certificate and key are needed to deploy")
 	}
 
