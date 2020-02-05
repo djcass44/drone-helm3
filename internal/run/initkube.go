@@ -20,12 +20,14 @@ type InitKube struct {
 }
 
 type kubeValues struct {
-	SkipTLSVerify  bool
-	Certificate    string
-	APIServer      string
-	Namespace      string
-	ServiceAccount string
-	Token          string
+	SkipTLSVerify     bool
+	Certificate       string
+	APIServer         string
+	Namespace         string
+	ServiceAccount    string
+	Token             string
+	ClientCertificate string
+	ClientKey         string
 }
 
 // NewInitKube creates a InitKube using the given Config and filepaths. No validation is performed at this time.
@@ -33,12 +35,14 @@ func NewInitKube(cfg env.Config, templateFile, configFile string) *InitKube {
 	return &InitKube{
 		config: newConfig(cfg),
 		values: kubeValues{
-			SkipTLSVerify:  cfg.SkipTLSVerify,
-			Certificate:    cfg.Certificate,
-			APIServer:      cfg.APIServer,
-			Namespace:      cfg.Namespace,
-			ServiceAccount: cfg.ServiceAccount,
-			Token:          cfg.KubeToken,
+			SkipTLSVerify:     cfg.SkipTLSVerify,
+			Certificate:       cfg.Certificate,
+			APIServer:         cfg.APIServer,
+			Namespace:         cfg.Namespace,
+			ServiceAccount:    cfg.ServiceAccount,
+			Token:             cfg.KubeToken,
+			ClientCertificate: cfg.ClientCertificate,
+			ClientKey:         cfg.ClientKey,
 		},
 		templateFilename: templateFile,
 		configFilename:   configFile,
@@ -61,8 +65,10 @@ func (i *InitKube) Prepare() error {
 	if i.values.APIServer == "" {
 		return errors.New("an API Server is needed to deploy")
 	}
-	if i.values.Token == "" {
-		return errors.New("token is needed to deploy")
+	if i.values.Token == "" && (i.values.ClientCertificate == "" && i.values.ClientKey == "") {
+		return errors.New("token or client certs are needed to deploy")
+	} else if i.values.Token == "" && (i.values.ClientCertificate == "" || i.values.ClientKey == "") {
+		return errors.New("both client certificate and key are needed to deploy")
 	}
 
 	if i.values.ServiceAccount == "" {
