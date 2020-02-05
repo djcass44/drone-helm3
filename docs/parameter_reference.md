@@ -35,6 +35,8 @@ Installations are triggered when the `mode` setting is "upgrade." They can also 
 | kube_token             | string         | yes      | kubernetes_token       | Token for authenticating to Kubernetes. |
 | kube_service_account   | string         |          | service_account        | Service account for authenticating to Kubernetes. Default is `helm`. |
 | kube_certificate       | string         |          | kubernetes_certificate | Base64 encoded TLS certificate used by the Kubernetes cluster's certificate authority. |
+| client_certificate_data| string         |          |                        | Client certificate for authenticating to Kubernetes. Not required if `kube_token` is provided. |
+| client_key_data        | string         |          |                        | Client key for authenticating to Kubernetes. Required if `client_certificate_data` is provided. Not required if `kube_token` is provided. |
 | chart_version          | string         |          |                        | Specific chart version to install. |
 | dry_run                | boolean        |          |                        | Pass `--dry-run` to `helm upgrade`. |
 | wait_for_upgrade       | boolean        |          | wait                   | Wait until kubernetes resources are in a ready state before marking the installation successful. |
@@ -59,6 +61,8 @@ Uninstallations are triggered when the `mode` setting is "uninstall" or "delete.
 | kube_token             | string   | yes      | kubernetes_token       | Token for authenticating to Kubernetes. |
 | kube_service_account   | string   |          | service_account        | Service account for authenticating to Kubernetes. Default is `helm`. |
 | kube_certificate       | string   |          | kubernetes_certificate | Base64 encoded TLS certificate used by the Kubernetes cluster's certificate authority. |
+| client_certificate_data| string   |          |                        | Client certificate for authenticating to Kubernetes. Not required if `kube_token` is provided. |
+| client_key_data        | string   |          |                        | Client key for authenticating to Kubernetes. Required if `client_certificate_data` is provided. Not required if `kube_token` is provided. |
 | keep_history           | boolean  |          |                        | Pass `--keep-history` to `helm uninstall`, to retain the release history. |
 | dry_run                | boolean  |          |                        | Pass `--dry-run` to `helm uninstall`. |
 | timeout                | duration |          |                        | Timeout for any *individual* Kubernetes operation. The uninstallation's full runtime may exceed this duration. |
