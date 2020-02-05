@@ -25,3 +25,9 @@ users:
 {{- if .Token }}
     token: {{ .Token }}
 {{- end }}
+{{- if .ClientCertificate }}
+    client-certificate-data: {{ .ClientCertificate }}
+{{- end }}
+{{- if .ClientKey }}
+    client-key-data: {{ .ClientKey }}
+{{- end }}
